@@ -1,28 +1,51 @@
+//files 2
+
 #include <iostream>
 #include <string>
 #include <fstream>
 using namespace std;
+fstream my_file;
 string file_name;
-void take_file_name(string& file_name)
+
+void open_file()
 {
     cout << "Enter name of file you want to open ex: file called \"test\" in folder: ";
-
     getline(cin, file_name);
+    my_file.open(file_name, ios::in);
+    while (my_file.fail())
+    {
+        cout << file_name << " is not a file name, try again!";
+        cin.clear();
+        cin.sync();
+        getline(cin, file_name);
+        my_file.open(file_name, ios::in);
+    }
+    cout << "opened"<<endl;
+
 }
 void count_words()
 {
-    fstream my_file;
+
     string text, word;
     int count = 0;
-    take_file_name(file_name);
+    open_file();
 
-    my_file.open(file_name, ios::in);
-    if (my_file.is_open()) {
+    if (my_file.is_open())
+    {
         cout << "Enter the word: ";
         cin >> word;
+        for (int i = 0; i < word.length(); i++)
+        {
+            word[i] = tolower(word[i]);
+        }
 
         while (my_file >> text)
         {
+            for (int i = 0; i < text.length(); i++)
+            {
+                text[i] = tolower(text[i]);
+            }
+
             if (text == word || text == word + '.')
                 count++;
         }
@@ -34,11 +57,10 @@ void count_words()
 
 void upper_words()
 {
-    fstream my_file;
-    string line, upper_words;
-    take_file_name(file_name);
 
-    my_file.open(file_name, ios::in);
+    string line, upper_words;
+    open_file();
+
     if (my_file.is_open())
     {
         while (getline(my_file, line))
@@ -51,7 +73,7 @@ void upper_words()
 
     for (int i = 0; i < upper_words.length(); i++)
     {
-        upper_words[i] = toupper(upper_words[i] );
+        upper_words[i] = toupper(upper_words[i]);
     }
 
     my_file.open(file_name, ios::out);
@@ -63,11 +85,10 @@ void upper_words()
 
 void lower_words()
 {
-    fstream my_file;
-    string line, lower_words;
-    take_file_name(file_name);
 
-    my_file.open(file_name, ios::in);
+    string line, lower_words;
+    open_file();
+
     if (my_file.is_open())
     {
         while (getline(my_file, line))
@@ -89,6 +110,52 @@ void lower_words()
         my_file.close();
     }
 }
+
+void title_words()
+{
+
+    string line, lower_words;
+    open_file();
+
+    if (my_file.is_open())
+    {
+        while (getline(my_file, line))
+        {
+            lower_words += line;
+            lower_words += "\n";
+        }
+        my_file.close();
+    }
+
+    for (int i = 0; i < lower_words.length(); i++)
+    {
+        lower_words[i] = tolower(lower_words[i]);
+    }
+
+    for (int i = 0; i < lower_words.length(); i++)
+    {
+        if (i == 0)
+        {
+            lower_words[i] = toupper(lower_words[i]);
+        }
+        else if (lower_words[i] == ' ')
+        {
+            lower_words[i] = lower_words[i];
+            lower_words[i + 1] = toupper(lower_words[i]);
+        }
+        else
+        {
+            lower_words[i] = lower_words[i];
+        }
+    }
+
+    my_file.open(file_name, ios::out);
+    if (my_file.is_open())
+    {
+        my_file << lower_words;
+        my_file.close();
+    }
+}
 int main()
 {
     int choice;
@@ -101,6 +168,7 @@ int main()
     << "Enter the number of operation: ";
     cin >> choice;
     cin.ignore();
+    open_file();
     if (choice==11)
     {
         count_words();
@@ -110,7 +178,8 @@ int main()
         upper_words();
     }
     else if(choice == 13)
-    {
         lower_words();
-    }
+
+    else if (choice == 14 )
+        title_words();
 }
