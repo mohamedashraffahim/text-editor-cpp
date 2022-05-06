@@ -4,9 +4,9 @@
 #include <string>
 #include <fstream>
 using namespace std;
+
 fstream my_file;
 string file_name;
-
 void open_file()
 {
     cout << "Enter name of file you want to open ex: file called \"test\" in folder: ";
@@ -20,10 +20,10 @@ void open_file()
         getline(cin, file_name);
         my_file.open(file_name, ios::in);
     }
-    cout << "opened"<<endl;
 
 }
-void count_words()
+
+void repeated_word()
 {
 
     string text, word;
@@ -111,6 +111,17 @@ void lower_words()
     }
 }
 
+void  count_words(){
+    string text;
+    int ctr = 0;
+    open_file();
+    while ( my_file >> text )
+        ctr++;
+    cout<<ctr;
+
+}
+
+
 void title_words()
 {
 
@@ -156,6 +167,72 @@ void title_words()
         my_file.close();
     }
 }
+
+void count_char()
+{
+    int ctr = 0;
+    char c ;
+    open_file();
+    while( 1 ){
+        c = my_file.get() ;
+        if ( isalpha(c))
+            ctr++;
+        if ( c == EOF){
+            cout<<ctr;
+            break;
+        }
+    }
+}
+
+void count_lines()
+{
+    string line ;
+    int ctr = 0;
+    open_file();
+    while (getline(my_file , line))
+        ctr++;
+    cout<<ctr;
+
+}
+
+void look_for_word ()
+{
+    string word,temp ;
+    open_file();
+    cout<<"enter the word you are looking for  ";
+    cin>>word;
+    while (my_file)
+    {
+        my_file >> temp;
+        if (temp == word){
+            cout<<"FOUND\n";
+            return;
+        }
+    }
+    cout<<"NOT FOUND\n";
+}
+
+void merge_files(){
+    open_file();
+    ofstream original_file ;
+    ifstream new_file ;
+    original_file.open(file_name, ios_base::app);
+    cout<<"enter the other file name  ";
+    getline(cin, file_name);
+    new_file.open(file_name);
+    while (new_file.fail())
+    {
+        cout << file_name << " is not a file name, try again!  ";
+        cin.clear();
+        cin.sync();
+        getline(cin, file_name);
+        new_file.open(file_name, ios::in);
+    }
+    original_file<< new_file.rdbuf() <<endl;
+    original_file.close();
+    new_file.close();
+}
+
 int main()
 {
     int choice;
@@ -168,10 +245,24 @@ int main()
     << "Enter the number of operation: ";
     cin >> choice;
     cin.ignore();
-    open_file();
+    if (choice == 6){
+        merge_files();
+    }
+    if ( choice == 7){
+        count_words();
+    }
+    if (choice == 8){
+        count_char();
+    }
+    if ( choice == 9){
+        count_lines();
+    }
+    if ( choice == 10){
+        look_for_word();
+    }
     if (choice==11)
     {
-        count_words();
+        repeated_word();
     }
     else if (choice == 12)
     {
