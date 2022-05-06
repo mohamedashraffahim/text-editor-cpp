@@ -7,6 +7,9 @@ using namespace std;
 
 fstream my_file;
 string file_name;
+
+
+
 void open_file()
 {
     cout << "Enter name of file you want to open ex: file called \"test\" in folder: ";
@@ -233,6 +236,43 @@ void merge_files(){
     new_file.close();
 }
 
+void display_content()
+{
+    ifstream dataFile; 
+    char fileName[81];
+    cout << "Enter the name of a file: ";
+    cin.getline(fileName, 81);
+    dataFile.open(fileName);
+    if (dataFile.fail()) 
+    {
+        cout << "File open error!" << endl;
+    }
+    else
+    {
+    cout << "File opened successful.\n";
+    cout << "Now reading information.\n";
+    int ctr = 0;
+    while (true)
+    {
+        char c;
+        c = my_file.get();
+        if (isalpha(c))
+        {
+            ctr++;
+        }
+        if (c == EOF)
+        {
+            break;
+        }
+    }
+    char name[ctr];
+    dataFile >> name;
+    cout << name << endl;
+    dataFile.close();
+}
+}
+
+
 int main()
 {
     int choice;
@@ -245,6 +285,12 @@ int main()
     << "Enter the number of operation: ";
     cin >> choice;
     cin.ignore();
+    if (choice == 2)
+    {
+        display_content();
+        main();
+    }
+    
     if (choice == 6){
         merge_files();
     }
