@@ -1,4 +1,3 @@
-
 // FCAI - Structured Programming - 2022 - Assignment 4
 //Program Name : text editor
 // Program Description : this program takes a file chosed by the user and applies changes on that file as the user wants
@@ -11,11 +10,13 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <cstring>
 using namespace std;
 
 fstream my_file;
 string file_name;
-
+int c;
+string content;
 
 
 void open_file()
@@ -31,12 +32,10 @@ void open_file()
         getline(cin, file_name);
         my_file.open(file_name, ios::in);
     }
-
 }
 
 void repeated_word()
 {
-
     string text, word;
     int count = 0;
     open_file();
@@ -259,23 +258,11 @@ void display_content()
     {
     cout << "File opened successful.\n";
     cout << "Now reading information.\n";
-    int ctr = 0;
-    while (true)
-    {
-        char c;
-        c = my_file.get();
-        if (isalpha(c))
+        while(! dataFile.eof())
         {
-            ctr++;
+            getline(dataFile, content);
+            cout << content << endl;
         }
-        if (c == EOF)
-        {
-            break;
-        }
-    }
-    char name[ctr];
-    dataFile >> name;
-    cout << name << endl;
     dataFile.close();
 }
 }
@@ -322,6 +309,102 @@ void add_text()
     ofile.close();
 }
 
+void cipher()
+{
+    ifstream dataFile; 
+    char fileName[81];
+    cout << "Enter the name of a file: ";
+    cin.getline(fileName, 81);
+    dataFile.open(fileName);
+    if (dataFile.fail()) 
+    {
+        cout << "File open error!" << endl;
+    }
+    else
+    {
+    cout << "File opened successfully.\n";
+    cout << "And file Encrypted successfully\n";
+    while (dataFile)
+    {
+        char ch;
+        dataFile.get(ch);
+        c+=1;
+    }
+    dataFile.close();
+    ifstream dataFile2;
+    dataFile2.open(fileName);
+    int ctr = 0;
+    char name[c-1], name2[c-1];
+        while(! dataFile2.eof())
+        {
+            getline(dataFile2, content);
+        }
+    strcpy(name, content.c_str());
+    // cout << name << endl;
+    strncpy(name2, name, c-1);
+    for (int i = 0; i < (c-1)  ; i++)
+    {
+       name2[i] = name[i] + 1;
+    }
+    dataFile.close();
+    ofstream ofile;
+    ofile.open(fileName, ofstream::out | ofstream::trunc);
+    ofile.close();
+    ofstream ofile2;
+    ofile2.open(fileName, ios_base::app);   
+    ofile2 << name2;
+    ofile2.close();
+}
+}
+
+void decipher()
+{
+    ifstream dataFile; 
+    char fileName[81];
+    cout << "Enter the name of a file: ";
+    cin.getline(fileName, 81);
+    dataFile.open(fileName);
+    if (dataFile.fail()) 
+    {
+        cout << "File open error!" << endl;
+    }
+    else
+    {
+    cout << "File opened successful.\n";
+    cout << "Decrypted successfully\n";
+    while (dataFile)
+    {
+        char ch;
+        dataFile.get(ch);
+        c+=1;
+    }
+    dataFile.close();
+    ifstream dataFile2;
+    dataFile2.open(fileName);
+    int ctr = 0;
+    char name[c-1], name2[c-1];
+        while(! dataFile2.eof())
+        {
+            getline(dataFile2, content);
+        }
+    strcpy(name, content.c_str());
+    // cout << name << endl;
+    strncpy(name2, name, c-1);
+    for (int i = 0; i < (c-1)  ; i++)
+    {
+       name2[i] = name[i] - 1;
+    }
+    dataFile.close();
+    ofstream ofile;
+    ofile.open(fileName, ofstream::out | ofstream::trunc);
+    ofile.close();
+    ofstream ofile2;
+    ofile2.open(fileName, ios_base::app);   
+    ofile2 << name2;
+    ofile2.close();
+}
+}
+
 int main()
 {
     int choice;
@@ -350,7 +433,14 @@ int main()
         delete_content();
         main();
     }
-    
+    if (choice == 4)
+    {
+        cipher();
+    }
+    if (choice == 5)
+    {
+        decipher();
+    }
     if (choice == 6)
     {
         merge_files();
