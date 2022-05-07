@@ -271,6 +271,23 @@ void display_content()
     dataFile.close();
 }
 }
+void delete_content()
+{
+    ofstream ofs;
+    char fileName[81];
+    cout << "Enter the name of a file: ";
+    cin.getline(fileName, 81);
+    ofs.open(fileName, ofstream::out | ofstream::trunc);   
+    if (ofs.fail()) 
+    {
+        cout << "File open error!" << endl;
+    }
+    else
+    {
+    cout << "File opened successful.\n";
+    }
+    ofs.close();
+}
 
 
 int main()
@@ -288,6 +305,11 @@ int main()
     if (choice == 2)
     {
         display_content();
+        main();
+    }
+    if (choice == 3)
+    {
+        delete_content();
         main();
     }
     
