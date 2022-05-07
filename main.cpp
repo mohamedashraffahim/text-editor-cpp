@@ -271,14 +271,15 @@ void display_content()
     dataFile.close();
 }
 }
+
 void delete_content()
 {
-    ofstream ofs;
+    ofstream ofile;
     char fileName[81];
     cout << "Enter the name of a file: ";
     cin.getline(fileName, 81);
-    ofs.open(fileName, ofstream::out | ofstream::trunc);   
-    if (ofs.fail()) 
+    ofile.open(fileName, ofstream::out | ofstream::trunc);   
+    if (ofile.fail()) 
     {
         cout << "File open error!" << endl;
     }
@@ -286,9 +287,32 @@ void delete_content()
     {
     cout << "File opened successful.\n";
     }
-    ofs.close();
+    ofile.close();
 }
 
+void add_text()
+{
+    ofstream ofile;
+    char fileName[81];
+    string data;
+    cout << "Enter the name of a file: ";
+    cin.getline(fileName, 81);
+    ofile.open(fileName, ios_base::app);   
+    if (ofile.fail()) 
+    {
+        cout << "File open error!" << endl;
+    }
+    else
+    {
+    cout << "File opened successful.\n";
+    }
+    cout << "Please enter the data you want to append: ";
+    cin.clear();
+    cin.sync();
+    getline(cin, data);
+    ofile << data;
+    ofile.close();
+}
 
 int main()
 {
@@ -302,6 +326,12 @@ int main()
     << "Enter the number of operation: ";
     cin >> choice;
     cin.ignore();
+    if (choice == 1)
+    {
+        add_text();
+        main();
+    }
+    
     if (choice == 2)
     {
         display_content();
