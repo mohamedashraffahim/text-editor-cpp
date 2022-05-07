@@ -11,6 +11,7 @@
 #include <string>
 #include <fstream>
 #include <cstring>
+#include <algorithm>
 using namespace std;
 
 fstream my_file;
