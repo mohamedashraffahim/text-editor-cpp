@@ -12,15 +12,40 @@
 #include <fstream>
 #include <cstring>
 #include <algorithm>
-
 using namespace std;
 
 fstream my_file;
 string file_name;
-int c;
 string content;
+int c;
 
 
+
+//makes sure tha the chosen opertion is an intger number
+void check_operation(string& number)
+{
+    //takes the chosen opertaion as a string
+    string chosen_opperation;
+    //loops through that string
+    for (int i = 0; i < number.length(); i++)
+    {
+        //if i is a digit it is appeanded
+        if (isdigit(number[i]))
+        {
+            chosen_opperation.push_back(number[i]);
+        }
+    }
+    //lenght of the string is not the same anymore it means that it icnulded a letter
+    if (chosen_opperation.length() != number.length())
+    {
+        //ask the user to enter a new chioce
+        cout << "Invalid input, please try again: ";
+        cin >> number;
+        cin.ignore();
+        //re-apply the same function
+        check_operation(number);
+    }
+}
 void open_file()
 {
     cout << "Enter name of file you want to open and its extention ex: file called \"test.txt\" in folder: ";
@@ -58,7 +83,7 @@ void repeated_word()
                 text[i] = tolower(text[i]);
             }
 
-            if (text == word || text == word + '.'|| text == word + ','|| text == '.'+ word || text == ',' + word)
+            if (text == word || text == word + '.' || text == word + ',' || text == '.' + word || text == ',' + word)
                 count++;
         }
 
@@ -125,13 +150,14 @@ void lower_words()
     }
 }
 
-void  count_words(){
+void  count_words()
+{
     string text;
     int ctr = 0;
     open_file();
-    while ( my_file >> text )
+    while (my_file >> text)
         ctr++;
-    cout<<ctr;
+    cout << ctr;
 
 }
 
@@ -179,16 +205,16 @@ void title_words()
 void count_char()
 {
     int ctr = 0;
-    char c ;
+    char c;
     open_file();
-    while( 1 )
+    while (1)
     {
-        c = my_file.get() ;
-        if ( isalpha(c))
+        c = my_file.get();
+        if (isalpha(c))
             ctr++;
-        if ( c == EOF)
+        if (c == EOF)
         {
-            cout<<ctr;
+            cout << ctr;
             break;
         }
     }
@@ -196,40 +222,40 @@ void count_char()
 
 void count_lines()
 {
-    string line ;
+    string line;
     int ctr = 0;
     open_file();
-    while (getline(my_file , line))
+    while (getline(my_file, line))
         ctr++;
-    cout<<ctr;
+    cout << ctr;
 
 }
 
-void look_for_word ()
+void look_for_word()
 {
-    string word,temp ;
+    string word, temp;
     open_file();
-    cout<<"enter the word you are looking for  ";
-    cin>>word;
+    cout << "enter the word you are looking for  ";
+    cin >> word;
     while (my_file)
     {
         my_file >> temp;
         if (temp == word)
         {
-            cout<<"FOUND\n";
+            cout << "FOUND\n";
             return;
         }
     }
-    cout<<"NOT FOUND\n";
+    cout << "NOT FOUND\n";
 }
 
 void merge_files()
 {
     open_file();
-    ofstream original_file ;
-    ifstream new_file ;
+    ofstream original_file;
+    ifstream new_file;
     original_file.open(file_name, ios_base::app);
-    cout<<"enter the other file name  ";
+    cout << "enter the other file name  ";
     getline(cin, file_name);
     new_file.open(file_name);
     while (new_file.fail())
@@ -240,7 +266,7 @@ void merge_files()
         getline(cin, file_name);
         new_file.open(file_name, ios::in);
     }
-    original_file<< new_file.rdbuf() <<endl;
+    original_file << new_file.rdbuf() << endl;
     original_file.close();
     new_file.close();
 }
@@ -357,74 +383,147 @@ void decipher()
     ofile2.close();
 }
 
+void save_file()
+{
+    ifstream sfile;
+    ofstream tfile;
+    string source_file;
+    string target_file;
+    string line, lower_words;
+    char ch;
+    cout << "Enter a name of the source file and its extention ex: file called \"test.txt\" : ";
+    getline(cin, source_file);
+    sfile.open(source_file);
+    if (sfile.fail())
+    {
+        cout << "Error in opening file!" << endl;
+
+    }
+
+    cout << "\nEnter a name for the new file you want to save and its extention ex: file called \"test2.txt\" : ";
+    getline(cin, target_file);
+    tfile.open(target_file);
+    if (tfile.fail())
+    {
+        cout << "Error in opening file!" << endl;
+        sfile.close();
+
+    }
+    while (sfile.eof() == 0)
+    {
+        while (getline(sfile, line))
+        {
+            lower_words += line;
+            lower_words += "\n";
+        }
+        tfile << lower_words;
+
+    }
+    cout << "File is copied/saved to another file successfully :)";
+    sfile.close();
+    tfile.close();
+
+}
 
 int main()
 {
-    int choice;
-    cout<<"choose the operation you want\n"
-    <<"1. Add new text to the end of the file\n2. Display the content of the file\n3. Empty the file\n4. Encrypt the file content\n"
-    <<"5. Decrypt the file content\n6. Merge another file\n7. Count the number of words in the file.\n8. Count the number of characters in the file\n"
-    <<"9. Count the number of lines in the file\n10. Search for a word in the file\n11. Count the number of times a word exists in the file (case insensitive)\n"
-    <<"12. Turn the file content to upper case.\n13. Turn the file content to lower case.\n14. Turn file content to 1st caps (1st char of each word is capital)\n"
-    <<"15. Save\n16. Exit\n"
-    << "Enter the number of operation: ";
-    cin >> choice;
-    cin.ignore();
-    if (choice == 1)
+    while (1)
     {
-        add_text();
-        main();
-    }
-    
-    if (choice == 2)
-    {
-        display_content();
-        main();
-    }
-    if (choice == 3)
-    {
-        delete_content();
-        main();
-    }
-    if (choice == 4)
-    {
-        cipher();
-    }
-    if (choice == 5)
-    {
-        decipher();
-    }
-    if (choice == 6)
-    {
-        merge_files();
-    }
-    if ( choice == 7)
-    {
-        count_words();
-    }
-    if (choice == 8)
-    {
-        count_char();
-    }
-    if ( choice == 9)
-    {
-        count_lines();
-    }
-    if ( choice == 10)
-    {
-        look_for_word();
-    }
-    if (choice==11)
-    {
-        repeated_word();
-    }
-    else if (choice == 12)
-    {
-        upper_words();
-    }
-    else if(choice == 13)
-        lower_words();
 
-    else if (choice == 14 )
-        title_words();
+
+
+        cout << "\nchoose the operation you want\n"
+            << "1. Add new text to the end of the file\n2. Display the content of the file\n3. Empty the file\n4. Encrypt the file content\n"
+            << "5. Decrypt the file content\n6. Merge two files\n7. Count the number of words in the file.\n8. Count the number of characters in the file\n"
+            << "9. Count the number of lines in the file\n10. Search for a word in the file\n11. Count the number of times a word exists in the file (case insensitive)\n"
+            << "12. Turn the file content to upper case.\n13. Turn the file content to lower case.\n14. Turn file content to title format (1st char of each word is capital)\n"
+            << "15. Save content to a new file\n16. Exit\n"
+            << "Enter the number of operation: ";
+        string chosen_opperation;
+        cin >> chosen_opperation;
+        cin.ignore();
+        cout << "\n";
+        check_operation(chosen_opperation);
+        int choice = stoi(chosen_opperation);
+        cin.ignore();
+
+        //terminates the program
+        if (choice == 16)
+        {
+            cout << "Thank you for using our program :)\n";
+            break;
+        }
+
+        if (choice > 0 && choice < 16)
+        {
+            if (choice == 1)
+            {
+                add_text();
+            }
+            if (choice == 2)
+            {
+                display_content();
+            }
+            if (choice == 3)
+            {
+                delete_content();
+            }
+            if (choice == 4)
+            {
+                cipher();
+            }
+            if (choice == 5)
+            {
+                decipher();
+            }
+            if (choice == 6)
+            {
+                merge_files();
+            }
+            if (choice == 7)
+            {
+                count_words();
+            }
+            if (choice == 8)
+            {
+                count_char();
+            }
+            if (choice == 9)
+            {
+                count_lines();
+            }
+            if (choice == 10)
+            {
+                look_for_word();
+            }
+            if (choice == 11)
+            {
+                repeated_word();
+            }
+            if (choice == 12)
+            {
+                upper_words();
+            }
+            if (choice == 13)
+            {
+                lower_words();
+            }
+            if (choice == 14)
+            {
+                title_words();
+            }
+            if (choice == 15)
+            {
+                save_file();
+            }
+        }
+
+        //gets the user back to choose the operation if he enters a wrong input
+        else
+        {
+            cout << "Sorry, your input is invalid. Please try again ! " << endl;
+            main();
+            cout << "\n";
+        }
+    }
 }
