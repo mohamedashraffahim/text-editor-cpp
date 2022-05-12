@@ -24,7 +24,6 @@ int main()
             << "Enter the number of operation: ";
         string chosen_opperation;
         cin >> chosen_opperation;
-        cin.ignore();
         cout << "\n";
         check_operation(chosen_opperation);
         int choice = stoi(chosen_opperation);
