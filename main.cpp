@@ -107,5 +107,7 @@ int main()
             main();
             cout << "\n";
         }
+        my_file.close();
     }
+    return 0;
 }
