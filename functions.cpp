@@ -333,6 +333,8 @@ void cipher()
     ofile2 << name2;
     ofile2.close();
     c = 0;
+    content = "";
+    content2 = "";
 }
 
 void decipher()
@@ -372,6 +374,8 @@ void decipher()
     ofile2 << name2;
     ofile2.close();
     c = 0;
+    content = "";
+    content2 = "";
 }
 
 void save_file()
