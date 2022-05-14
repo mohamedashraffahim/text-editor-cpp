@@ -305,6 +305,7 @@ void cipher()
         my_file.get(ch);
         c+=1;
     }
+    // cout << c << endl;
     my_file.close();
     ifstream dataFile2;
     dataFile2.open(file_name);
@@ -313,8 +314,11 @@ void cipher()
         while(! dataFile2.eof())
         {
             getline(dataFile2, content);
+            content2 += content;
+            content2 += '\n';
         }
-    strcpy(name, content.c_str());
+        // cout << content2 << endl;
+    strcpy(name, content2.c_str());
     strncpy(name2, name, c-1);
     for (int i = 0; i < (c-1)  ; i++)
     {
@@ -328,6 +332,7 @@ void cipher()
     ofile2.open(file_name, ios_base::app);   
     ofile2 << name2;
     ofile2.close();
+    c = 0;
 }
 
 void decipher()
@@ -339,6 +344,7 @@ void decipher()
         my_file.get(ch);
         c+=1;
     }
+    // cout << c << endl;
     my_file.close();
     ifstream dataFile2;
     dataFile2.open(file_name);
@@ -347,8 +353,11 @@ void decipher()
         while(! dataFile2.eof())
         {
             getline(dataFile2, content);
+            content2 += content;
+            content2 += '\n';
         }
-    strcpy(name, content.c_str());
+        // cout << content2 << endl;
+    strcpy(name, content2.c_str());
     strncpy(name2, name, c-1);
     for (int i = 0; i < (c-1)  ; i++)
     {
@@ -362,6 +371,7 @@ void decipher()
     ofile2.open(file_name, ios_base::app);   
     ofile2 << name2;
     ofile2.close();
+    c = 0;
 }
 
 void save_file()

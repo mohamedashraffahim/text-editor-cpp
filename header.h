@@ -10,7 +10,7 @@ using namespace std;
 
 fstream my_file;
 string file_name;
-string content;
+string content, content2;
 int c;
 
 void check_operation(string& number);
