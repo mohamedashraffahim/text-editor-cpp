@@ -291,7 +291,9 @@ void add_text()
     cout << "Please enter the data you want to append: ";
     cin.clear();
     cin.sync();
-    getline(cin, data);
+    getline(cin, data,'\0');
+    cin.sync();
+    cin.clear();
     ofile << data;
     ofile.close();
 }
